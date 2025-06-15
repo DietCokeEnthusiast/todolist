@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const saved = localStorage.getItem("todo-tasks");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("todo-tasks", JSON.stringify(tasks));
+  }, {tasks})
 
   const handleAddTask = () => {
     if (input.trim() === "") return;
